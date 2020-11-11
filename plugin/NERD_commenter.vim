@@ -1060,6 +1060,12 @@ function s:CommentLinesToggle(forceNested, firstLine, lastLine)
 
     let align = g:NERDDefaultAlign
     let leftAlignIndx = align ==# 'start' ? 0 : s:LeftMostIndx(a:forceNested, 0, a:firstLine, a:lastLine)
+    if align ==# 'left' && currentLine != 1
+        let prevLine = currentLine - 1
+        if s:IsCommented(s:Left(), s:Right(), getline(prevLine)) == 1
+            let leftAlignIndx = s:LeftMostIndx(a:forceNested, 0, prevLine, a:lastLine)
+        endif
+    endif
     let rightAlignIndx = s:RightMostIndx(a:forceNested, 0, a:firstLine, a:lastLine)
     let rightAlignIndx = rightAlignIndx + strlen(s:Left({'space': 1}))
 
